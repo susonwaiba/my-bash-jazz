@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+O_TYPE=${1:-"default"};
+
+prefixPath="$HOME";
+if [ -f "$HOME/.config/.my-tmux-session-$O_TYPE" ];
+then
+    prefixPath="$HOME/.config";
+fi
+if [ -f "$HOME/.config/my-bash-jazz/.my-tmux-session-$O_TYPE" ];
+then
+    prefixPath="$HOME/.config/my-bash-jazz";
+fi
+
+filePath="$prefixPath/.my-tmux-session-$O_TYPE";
+additionalFilePath="$prefixPath/.my-tmux-session-$O_TYPE-additional";
+
+dirList=$(cat $filePath);
+
+if [[ -z $dirList ]];
+then
+    exit 0;
+fi
+
+dirList=$(echo $dirList | sd "~" $HOME);
+
+allDirList=$(fd . $dirList -d 1 -t d)
+
+if [ -f "$additionalFilePath" ];
+then
+    additionalDirList=$(cat $additionalFilePath);
+    additionalDirList=$(echo "$additionalDirList" | sd "~" $HOME);
+    allDirList=$(printf "%s\n%s\n" $allDirList $additionalDirList);
+fi
+
+selected=$(echo "$allDirList" | fzf --delimiter="\n");
+
+if [[ -z $selected ]];
+then
+    exit 0;
+fi
+
+selectedName=$(basename "$selected" | tr . _);
+tmuxRunning=$(pgrep tmux);
+
+if [[ -z $TMUX ]] && [[ -z $tmuxRunning ]];
+then
+    tmux new-session -s $selectedName -c $selected;
+    exit 0;
+fi
+
+if ! tmux has-session -t=$selectedName 2> /dev/null;
+then
+    tmux new-session -ds $selectedName -c $selected;
+fi
+
+tmux switch-client -t $selectedName;
+

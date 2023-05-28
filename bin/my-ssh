@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+O_TYPE=${1:-"default"};
+O_MODE=${1:-"connect"}; # connect or copy
+
+prefixPath="$HOME";
+if [ -f "$HOME/.config/.my-ssh-$O_TYPE" ];
+then
+    prefixPath="$HOME/.config";
+fi
+if [ -f "$HOME/.config/my-bash-jazz/.my-ssh-$O_TYPE" ];
+then
+    prefixPath="$HOME/.config/my-bash-jazz";
+fi
+
+filePath="$prefixPath/.my-ssh-$O_TYPE";
+
+sshList=$(cat $filePath | awk -F ' = ' '/1/ {print $1}');
+
+if [[ -z $sshList ]];
+then
+    exit 0;
+fi
+
+selected=$(printf "%s\n" "${sshList}" | fzf --delimiter="\n");
+
+if [[ -z $selected ]]; then
+    exit 0;
+fi
+
+selectedName=$(basename "$selected" | tr . _);
+selectedSsh=$(cat $filePath | grep $selectedName | awk -F ' = ' '/1/ {print $2}');
+
+echo "my-ssh:- $selectedName --> $selectedSsh";
+
+if [ "$O_MODE" == "copy" ];
+then
+
+    if [[ "$OSTYPE" == *"darwin"* ]];
+    then
+        echo $selectedSsh | pbcopy;
+    else
+        echo $selectedSsh | xclip -sel clip;
+    fi
+else
+    exec $selectedSsh;
+fi
