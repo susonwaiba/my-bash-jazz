@@ -16,21 +16,20 @@ My collection of bash scripts.
 ### my-tmux-session
 
 - Dir structure
-- - ~/
 
-- - ~/config <-- [S]
-- - ~/config/* <-- [S]
+```text
+~/
+~/config <-- [S]
+~/config/* <-- [S]
+~/me <-- [S]
+~/me/* <-- [S]
+~/ew <-- [S]
+~/ew/* <-- [S]
+~/work <-- [S]
+~/work/* <-- [S]
 
-- - ~/me <-- [S]
-- - ~/me/* <-- [S]
-
-- - ~/ew <-- [S]
-- - ~/ew/* <-- [S]
-
-- - ~/work <-- [S]
-- - ~/work/* <-- [S]
-
-- [S] = Searchable upto level 1
+[S] = Searchable upto level 1
+```
 
 - List search directory
 
@@ -107,7 +106,7 @@ fi
 - Clone the repository
 
 ```bash
-git clone https://github.com/susonwaiba/my-bash-jazz ~/.config/
+git clone https://github.com/susonwaiba/my-bash-jazz ~/.config/my-bash-jazz
 ```
 
 - Give perssions to execute
