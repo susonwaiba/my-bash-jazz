@@ -15,6 +15,12 @@ My collection of bash scripts.
 
 ### my-tmux-session
 
+- demo
+
+[![asciicast](https://asciinema.org/a/588405.svg)](https://asciinema.org/a/588405)
+
+[View at asciinema](https://asciinema.org/a/588405)
+
 - Dir structure
 
 ```text
@@ -60,6 +66,14 @@ my-tmux-session default
 ```
 
 ### my-ssh
+
+- demo
+
+[![asciicast](https://asciinema.org/a/588404.svg)](https://asciinema.org/a/588404)
+
+[View at asciinema](https://asciinema.org/a/588404)
+
+
 
 ```bash
 # For me
@@ -109,7 +123,7 @@ fi
 git clone https://github.com/susonwaiba/my-bash-jazz ~/.config/my-bash-jazz
 ```
 
-- Give perssions to execute
+- Give permission to execute
 
 ```bash
 sudo chmod +x ~/.config/my-bash-jazz/bin/*
