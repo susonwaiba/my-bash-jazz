@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 O_TYPE=${1:-"default"};
-O_MODE=${1:-"connect"}; # connect or copy
+O_MODE=${2:-"connect"}; # connect or copy
 
 prefixPath="$HOME";
 if [ -f "$HOME/.config/.my-ssh-$O_TYPE" ];
