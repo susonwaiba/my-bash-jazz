@@ -15,7 +15,7 @@ fi
 
 filePath="$prefixPath/.my-ssh-$O_TYPE";
 
-sshList=$(cat $filePath | awk -F ' = ' '/1/ {print $1}');
+sshList=$(awk -F ' = ' '/1/ {print $1}' "$filePath");
 
 if [[ -z $sshList ]];
 then
@@ -29,19 +29,23 @@ if [[ -z $selected ]]; then
 fi
 
 selectedName=$(basename "$selected" | tr . _);
-selectedSsh=$(cat $filePath | grep $selectedName | awk -F ' = ' '/1/ {print $2}');
+selectedSsh=$(awk -F ' = ' -v name="$selectedName" '$1 == name {print $2}' "$filePath");
 
 echo "my-ssh:- $selectedName --> $selectedSsh";
 
 if [ "$O_MODE" == "copy" ];
 then
-
     if [[ "$OSTYPE" == *"darwin"* ]];
     then
-        echo $selectedSsh | pbcopy;
+        echo "$selectedSsh" | pbcopy;
     else
-        echo $selectedSsh | xclip -sel clip;
+        echo "$selectedSsh" | xclip -sel clip;
     fi
 else
-    exec $selectedSsh;
+    # Check if terminal is Kitty, then execute using `kitty +kitten ssh`
+    if [ "$TERM_PROGRAM" == "kitty" ]; then
+        exec kitty +kitten ssh "$selectedSsh";
+    else
+        exec "$selectedSsh";
+    fi
 fi
