@@ -44,8 +44,8 @@ then
     fi
 else
     if [ "$TERM" == "xterm-kitty" ]; then
-        exec kitten ssh "$selectedSsh";
+        exec kitten $selectedSsh;
     else
-        exec ssh "$selectedSsh";
+        exec $selectedSsh;
     fi
 fi
